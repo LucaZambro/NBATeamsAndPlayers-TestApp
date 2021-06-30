@@ -1,32 +1,50 @@
 package com.example.nbateamsandplayers_testapp.presentation.teams
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.nbateamsandplayers_testapp.R
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.nbateamsandplayers_testapp.databinding.TeamsFragmentBinding
+import com.example.nbateamsandplayers_testapp.presentation.adapters.TeamAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TeamsFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = TeamsFragment()
-    }
+    private val viewModel: TeamsViewModel by viewModels()
+    private lateinit var binding: TeamsFragmentBinding
+    private var adapter: TeamAdapter? = null
 
-    private lateinit var viewModel: TeamsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.teams_fragment, container, false)
+        // Inflate the layout for this fragment
+        binding = TeamsFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(TeamsViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupRecyclerView()
+
+        viewModel.getTeams().observe(viewLifecycleOwner, { teams ->
+            adapter?.dataSet = teams
+        })
+
+    }
+
+    private fun setupRecyclerView() {
+        binding.apply {
+            adapter = TeamAdapter()
+            recyclerTeams.layoutManager = GridLayoutManager(requireContext(), 2)
+            recyclerTeams.adapter = adapter
+        }
     }
 
 }

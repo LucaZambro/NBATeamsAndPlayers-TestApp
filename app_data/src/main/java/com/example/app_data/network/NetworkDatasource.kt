@@ -9,5 +9,5 @@ interface NetworkDatasource {
 
     suspend fun getPlayers(): List<Player>
 
-    suspend fun getPlayer(id: Int): List<Player>
+    suspend fun getPlayer(id: Int): Player
 }

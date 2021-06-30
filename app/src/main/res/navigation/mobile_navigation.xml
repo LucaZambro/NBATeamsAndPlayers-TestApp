@@ -29,5 +29,9 @@
         android:id="@+id/detailFragment"
         android:name="com.example.nbateamsandplayers_testapp.presentation.detail.DetailFragment"
         android:label="detail_fragment"
-        tools:layout="@layout/detail_fragment" />
+        tools:layout="@layout/detail_fragment" >
+        <argument
+            android:name="playerId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

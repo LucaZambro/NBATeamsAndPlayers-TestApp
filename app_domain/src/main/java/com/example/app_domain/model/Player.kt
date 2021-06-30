@@ -5,7 +5,7 @@ data class Player (
     val firstName: String = "",
     val lastName: String = "",
     val position: String = "",
-    val team: Team,
-    val height: Double,
-    val weight: Double
+    val team: Team = Team(),
+    val height: Double = 0.0,
+    val weight: Double = 0.0
 )

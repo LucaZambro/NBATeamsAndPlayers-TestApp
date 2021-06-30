@@ -9,11 +9,11 @@ interface APIInterface {
 
     //DA SISTEMARE
     @GET("teams")
-    suspend fun getTeams() : Response<List<TeamDataModel>>
+    suspend fun getTeams() : Response<TeamDataModel>
 
     @GET("players")
-    suspend fun getPlayers(@Query("page") page: Int): Response<List<PlayerDataModel>>
+    suspend fun getPlayers(@Query("page") page: Int): Response<PlayerDataModel>
 
     @GET("players/{id}")
-    suspend fun getPlayer(@Path("id") id: Int): Response<List<PlayerDataModel>>
+    suspend fun getPlayer(@Path("id") id: Int): Response<SinglePlayerDataModel>
 }

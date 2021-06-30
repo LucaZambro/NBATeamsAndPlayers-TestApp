@@ -18,9 +18,10 @@ internal class RetrofitModule {
     @Provides
     @Singleton
     fun provideRetrofit(): APIInterface {
-//        val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor()
-//        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor()
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         val client: OkHttpClient = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
             .addInterceptor { chain ->
                 val newRequest = chain.request().newBuilder()
                     .addHeader(
