@@ -8,6 +8,6 @@ interface PlayerRepository {
 
     suspend fun getPlayer(id: Int): Player
 
-    suspend fun getFilteredPlayers(filter: String): List<Player>
+    suspend fun getFilteredPlayers(filter: String, page: Int): Map<Int, List<Player>>
 
 }

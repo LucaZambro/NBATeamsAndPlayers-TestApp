@@ -9,13 +9,16 @@ interface APIInterface {
 
     //DA SISTEMARE
     @GET("teams")
-    suspend fun getTeams() : Response<TeamDataModel>
+    suspend fun getTeams(): Response<TeamDataModel>
 
     @GET("players")
     suspend fun getPlayers(@Query("page") page: Int): Response<PlayerDataModel>
 
     @GET("players")
-    suspend fun getFilteredPlayers(@Query("search") filter: String): Response<PlayerDataModel>
+    suspend fun getFilteredPlayers(
+        @Query("search") filter: String,
+        @Query("page") page: Int
+    ): Response<PlayerDataModel>
 
     @GET("players/{id}")
     suspend fun getPlayer(@Path("id") id: Int): Response<SinglePlayerDataModel>

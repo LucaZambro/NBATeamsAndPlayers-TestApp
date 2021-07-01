@@ -1,6 +1,7 @@
 package com.example.nbateamsandplayers_testapp.presentation.players
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,16 +36,21 @@ class PlayersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.edtTxtSearch.doAfterTextChanged {
-            viewModel.search(it?.trim().toString())
+            Log.d("*******", "doAfterTextChanged: $it")
+            if (it.toString().trim() != "")
+                viewModel.search(it?.trim().toString(), viewModel.nextFilteredPage)
+            else {
+                viewModel.nextPage = 1
+                viewModel.flushPlayers()
+                viewModel.loadPlayers()
+            }
         }
 
         setupRecyclerView()
-        //viewmodel
+
         viewModel.getPlayers().observe(viewLifecycleOwner, { players ->
 
-            binding.progressBar.visibility = View.VISIBLE
-            binding.viewBackground.visibility = View.VISIBLE
-
+            Log.d("*****", "observe: ")
             adapter?.dataSet = players
 
             binding.progressBar.visibility = View.INVISIBLE
@@ -63,9 +69,22 @@ class PlayersFragment : Fragment() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     if (!recyclerPlayers.canScrollVertically(1)) {
-                        binding.progressBar.visibility = View.VISIBLE
-                        binding.viewBackground.visibility = View.VISIBLE
-                        viewModel.loadPlayers()
+
+                        val filter = binding.edtTxtSearch.text.toString().trim()
+
+                        // Se l'utente non sta filtrando i giocatori allora carica i giocatori
+                        if (filter == "" && viewModel.nextPage != 0) {
+                            binding.progressBar.visibility = View.VISIBLE
+                            binding.viewBackground.visibility = View.VISIBLE
+                            viewModel.loadPlayers()
+                        }
+
+                        // Se l'utente sta filtrando i giocatori allora utilizzo la richiesta di ricerca
+                        if (filter != "" && viewModel.nextFilteredPage != 0) {
+                            binding.progressBar.visibility = View.VISIBLE
+                            binding.viewBackground.visibility = View.VISIBLE
+                            viewModel.search(filter, viewModel.nextFilteredPage)
+                        }
                     }
                 }
             })

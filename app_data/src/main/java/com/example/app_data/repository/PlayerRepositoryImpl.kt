@@ -16,6 +16,6 @@ class PlayerRepositoryImpl @Inject constructor(
 
     override suspend fun getPlayer(id: Int): Player = networkDatasource.getPlayer(id)
 
-    override suspend fun getFilteredPlayers(filter: String): List<Player> = networkDatasource.getFilteredPlayers(filter)
+    override suspend fun getFilteredPlayers(filter: String, page: Int): Map<Int, List<Player>> = networkDatasource.getFilteredPlayers(filter, page)
 
 }
