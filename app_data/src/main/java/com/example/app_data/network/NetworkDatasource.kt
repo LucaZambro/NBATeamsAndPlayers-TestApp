@@ -7,7 +7,10 @@ interface NetworkDatasource {
 
     suspend fun getTeams(): List<Team>
 
-    suspend fun getPlayers(): List<Player>
+    suspend fun getPlayers(page: Int): List<Player>
 
     suspend fun getPlayer(id: Int): Player
+
+    suspend fun getFilteredPlayers(filter: String): List<Player>
+
 }

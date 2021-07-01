@@ -24,18 +24,35 @@ class PlayersViewModel @Inject constructor(
 
     fun loadPlayers() {
         viewModelScope.launch {
-            val response = repository.getPlayers()
+            val response = repository.getPlayers(1)
             players.postValue(response)
         }
 
     }
 
     fun search(text: String) {
+        /*
+        // RICERCA DEI GIOCATORI GIà CARICATI
         viewModelScope.launch {
             val response = repository.getPlayers().filter {
                 it.firstName.contains(text, ignoreCase = true) || it.lastName.contains(text, ignoreCase = true)
             }
             players.postValue(response)
         }
+        */
+
+        // RICERCA DEI GIOCATORI CON API
+        viewModelScope.launch {
+            val response = repository.getFilteredPlayers(text)
+            players.postValue(response)
+        }
+    }
+
+    fun loadPlayersNextPage(page: Int) {
+        viewModelScope.launch {
+            val response = repository.getPlayers(page)
+            players.postValue(response)
+        }
+
     }
 }

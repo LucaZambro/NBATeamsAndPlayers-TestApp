@@ -21,8 +21,8 @@ class NetworkDatasourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPlayers(): List<Player> {
-        val response = apiInterface.getPlayers(1)
+    override suspend fun getPlayers(page: Int): List<Player> {
+        val response = apiInterface.getPlayers(page)
         return if (response.isSuccessful) {
             response.body()?.toDomainModel().orEmpty()
         } else {
@@ -38,5 +38,15 @@ class NetworkDatasourceImpl @Inject constructor(
             Player()
         }
     }
+
+    override suspend fun getFilteredPlayers(filter: String): List<Player> {
+        val response = apiInterface.getFilteredPlayers(filter)
+        return if (response.isSuccessful) {
+            response.body()?.toDomainModel()!!
+        } else {
+            arrayListOf()
+        }
+    }
+
 }
 

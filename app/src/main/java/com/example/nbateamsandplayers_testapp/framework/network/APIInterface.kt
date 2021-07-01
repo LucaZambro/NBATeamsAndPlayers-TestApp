@@ -14,6 +14,9 @@ interface APIInterface {
     @GET("players")
     suspend fun getPlayers(@Query("page") page: Int): Response<PlayerDataModel>
 
+    @GET("players")
+    suspend fun getFilteredPlayers(@Query("search") filter: String): Response<PlayerDataModel>
+
     @GET("players/{id}")
     suspend fun getPlayer(@Path("id") id: Int): Response<SinglePlayerDataModel>
 }
