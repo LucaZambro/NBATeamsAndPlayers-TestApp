@@ -35,6 +35,9 @@ class TeamsFragment : Fragment() {
 
         viewModel.getTeams().observe(viewLifecycleOwner, { teams ->
             adapter?.dataSet = teams
+
+            binding.progressBar.visibility = View.INVISIBLE
+            binding.viewBackground.visibility = View.INVISIBLE
         })
 
     }

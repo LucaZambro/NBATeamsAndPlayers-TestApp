@@ -40,14 +40,15 @@ class DetailFragment : Fragment() {
 
         viewModel.getPlayer(args.playerId).observe(viewLifecycleOwner, { player ->
             binding.apply {
-                txtPlayerId.text=player.id.toString()
-                txtPlayerName.text=player.firstName.uppercase()
-                txtPlayerSurname.text=player.lastName.uppercase()
-                txtPlayerTeam.text=player.team.fullName
-                txtPosition.text=player.position
-                txtHeight.text="HEIGHT: ${player.height} FEET"
-                txtWeight.text="WEIGHT: ${player.weight} POUNDS"
-
+                txtPlayerId.text = player.id.toString()
+                txtPlayerName.text = player.firstName.uppercase()
+                txtPlayerSurname.text = player.lastName.uppercase()
+                txtPlayerTeam.text = player.team.fullName
+                txtPosition.text = player.position
+                txtHeight.text = "HEIGHT: ${player.height} FEET"
+                txtWeight.text = "WEIGHT: ${player.weight} POUNDS"
+                progressBar.visibility = View.INVISIBLE
+                viewBackground.visibility = View.INVISIBLE
             }
         })
 

@@ -28,6 +28,8 @@
                 android:layout_marginStart="16dp"
                 android:text="NAME"
                 android:textSize="16sp"
+                android:fontFamily="@font/raleway"
+                android:textStyle="bold"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="@id/imgPlayer"
                 app:layout_constraintStart_toEndOf="@id/imgPlayer" />
@@ -36,7 +38,8 @@
                 android:id="@+id/txtPlayerSurname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="NAME"
+                android:text="SURNAME"
+                android:fontFamily="@font/raleway_extrabold"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"

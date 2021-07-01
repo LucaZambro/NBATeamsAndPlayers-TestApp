@@ -40,9 +40,15 @@ class PlayersFragment : Fragment() {
         setupRecyclerView()
         //viewmodel
         viewModel.getPlayers().observe(viewLifecycleOwner, { players ->
-            adapter?.dataSet = players
-        })
 
+            binding.progressBar.visibility = View.VISIBLE
+            binding.viewBackground.visibility = View.VISIBLE
+
+            adapter?.dataSet = players
+
+            binding.progressBar.visibility = View.INVISIBLE
+            binding.viewBackground.visibility = View.INVISIBLE
+        })
 
     }
 
@@ -56,6 +62,7 @@ class PlayersFragment : Fragment() {
                 val action = PlayersFragmentDirections.actionPlayersFragmentToDetailFragment(player.id)
                 findNavController().navigate(action)
             }
+
         }
     }
 }
