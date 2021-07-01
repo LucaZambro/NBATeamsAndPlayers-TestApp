@@ -37,8 +37,10 @@ class PlayersFragment : Fragment() {
 
         binding.edtTxtSearch.doAfterTextChanged {
             Log.d("*******", "doAfterTextChanged: $it")
-            if (it.toString().trim() != "")
+            if (it.toString().trim() != "") {
+                viewModel.flushPlayers()
                 viewModel.search(it?.trim().toString(), viewModel.nextFilteredPage)
+            }
             else {
                 viewModel.nextPage = 1
                 viewModel.flushPlayers()
