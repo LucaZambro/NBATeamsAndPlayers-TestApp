@@ -21,12 +21,15 @@ class NetworkDatasourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPlayers(page: Int): List<Player> {
+    override suspend fun getPlayers(page: Int): Map<Int, List<Player>> {
         val response = apiInterface.getPlayers(page)
         return if (response.isSuccessful) {
-            response.body()?.toDomainModel().orEmpty()
+            mapOf(
+                response.body()!!.meta.nextPage to
+                        response.body()?.toDomainModel().orEmpty()
+            )
         } else {
-            arrayListOf()
+            mapOf(1 to arrayListOf())
         }
     }
 

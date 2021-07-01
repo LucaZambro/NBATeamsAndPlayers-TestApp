@@ -16,6 +16,7 @@ class PlayersViewModel @Inject constructor(
 ): ViewModel() {
 
     private val players: MutableLiveData<List<Player>> = MutableLiveData()
+    private var nextPage: Int = 1 // Inizio dalla prima pagina alla creazione del fragment
 
     fun getPlayers(): LiveData<List<Player>> {
         loadPlayers()
@@ -24,8 +25,13 @@ class PlayersViewModel @Inject constructor(
 
     fun loadPlayers() {
         viewModelScope.launch {
-            val response = repository.getPlayers(1)
-            players.postValue(response)
+            val response = repository.getPlayers(nextPage)
+            nextPage = response.keys.first()
+
+            val newPlayerList = mutableListOf<Player>()
+            newPlayerList.addAll(players.value.orEmpty())
+            newPlayerList.addAll(response.get(nextPage)!!)
+            players.postValue(newPlayerList)
         }
 
     }
@@ -48,11 +54,4 @@ class PlayersViewModel @Inject constructor(
         }
     }
 
-    fun loadPlayersNextPage(page: Int) {
-        viewModelScope.launch {
-            val response = repository.getPlayers(page)
-            players.postValue(response)
-        }
-
-    }
 }

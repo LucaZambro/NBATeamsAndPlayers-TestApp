@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.nbateamsandplayers_testapp.databinding.PlayersFragmentBinding
 import com.example.nbateamsandplayers_testapp.presentation.adapters.PlayerAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,8 +59,20 @@ class PlayersFragment : Fragment() {
             recyclerPlayers.layoutManager = LinearLayoutManager(requireContext())
             recyclerPlayers.adapter = adapter
 
+            recyclerPlayers.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (!recyclerPlayers.canScrollVertically(1)) {
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.viewBackground.visibility = View.VISIBLE
+                        viewModel.loadPlayers()
+                    }
+                }
+            })
+
             adapter?.onPlayerClickListener = { player ->
-                val action = PlayersFragmentDirections.actionPlayersFragmentToDetailFragment(player.id)
+                val action =
+                    PlayersFragmentDirections.actionPlayersFragmentToDetailFragment(player.id)
                 findNavController().navigate(action)
             }
 

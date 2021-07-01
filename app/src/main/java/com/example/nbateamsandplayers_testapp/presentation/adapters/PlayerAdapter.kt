@@ -27,7 +27,6 @@ class PlayerAdapter() : RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
                 root.setOnClickListener {
                     onPlayerClickListener?.invoke(player)
                 }
-
             }
 
         }
@@ -44,5 +43,6 @@ class PlayerAdapter() : RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int = dataSet.size
+
 
 }
