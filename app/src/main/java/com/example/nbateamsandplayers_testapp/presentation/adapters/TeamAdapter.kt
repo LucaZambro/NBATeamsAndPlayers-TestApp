@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.app_domain.model.Team
 import com.example.nbateamsandplayers_testapp.databinding.TeamCardItemBinding
 
-class TeamAdapter() : RecyclerView.Adapter<TeamAdapter.ViewHolder>() {
+class TeamAdapter : RecyclerView.Adapter<TeamAdapter.ViewHolder>() {
 
     var dataSet: List<Team> = listOf()
         set(value) {
@@ -14,7 +14,7 @@ class TeamAdapter() : RecyclerView.Adapter<TeamAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    inner class ViewHolder(val binding: TeamCardItemBinding) :
+    inner class ViewHolder(private val binding: TeamCardItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(team: Team) {

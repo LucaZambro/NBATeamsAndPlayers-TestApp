@@ -22,7 +22,7 @@ class TeamsViewModel @Inject constructor(
         return teams
     }
 
-    fun loadTeams() {
+    private fun loadTeams() {
         viewModelScope.launch {
             val response = repository.getTeams()
             teams.postValue(response)

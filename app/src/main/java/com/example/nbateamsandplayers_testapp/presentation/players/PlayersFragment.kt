@@ -26,7 +26,7 @@ class PlayersFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = PlayersFragmentBinding.inflate(inflater, container, false)
         return binding.root
@@ -37,21 +37,15 @@ class PlayersFragment : Fragment() {
 
         binding.edtTxtSearch.doAfterTextChanged {
             Log.d("*******", "doAfterTextChanged: $it")
-            if (it.toString().trim() != "") {
-                viewModel.flushPlayers()
-                viewModel.search(it?.trim().toString(), viewModel.nextFilteredPage)
-            }
-            else {
-                viewModel.nextPage = 1
-                viewModel.flushPlayers()
+            if (it.toString().trim() != "")
+                viewModel.search(it?.trim().toString())
+            else
                 viewModel.loadPlayers()
-            }
         }
 
         setupRecyclerView()
 
         viewModel.getPlayers().observe(viewLifecycleOwner, { players ->
-
             Log.d("*****", "observe: ")
             adapter?.dataSet = players
 
@@ -74,18 +68,20 @@ class PlayersFragment : Fragment() {
 
                         val filter = binding.edtTxtSearch.text.toString().trim()
 
-                        // Se l'utente non sta filtrando i giocatori allora carica i giocatori
+                        // Se l'utente non sta filtrando i giocatori
+                        // allora carica i giocatori della pagina successiva, se esiste
                         if (filter == "" && viewModel.nextPage != 0) {
                             binding.progressBar.visibility = View.VISIBLE
                             binding.viewBackground.visibility = View.VISIBLE
-                            viewModel.loadPlayers()
+                            viewModel.loadMorePlayers()
                         }
 
-                        // Se l'utente sta filtrando i giocatori allora utilizzo la richiesta di ricerca
+                        // Se l'utente sta filtrando i giocatori
+                        // allora carica i giocatori della pagina di ricerca successiva, se esiste
                         if (filter != "" && viewModel.nextFilteredPage != 0) {
                             binding.progressBar.visibility = View.VISIBLE
                             binding.viewBackground.visibility = View.VISIBLE
-                            viewModel.searchMorePlayers(filter, viewModel.nextFilteredPage)
+                            viewModel.searchMorePlayers(filter)
                         }
                     }
                 }

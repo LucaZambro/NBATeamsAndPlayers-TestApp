@@ -46,13 +46,13 @@ fun TeamDataModel.toDomainModel(): List<Team> {
     this.data.forEach {
         teams.add(
             Team(
-                id = it.id ?: 0,
-                abbreviation = it.abbreviation.orEmpty(),
-                city = it.city.orEmpty(),
-                conference = it.conference.orEmpty(),
-                division = it.division.orEmpty(),
-                fullName = it.fullName.orEmpty(),
-                name = it.name.orEmpty()
+                id = it.id,
+                abbreviation = it.abbreviation,
+                city = it.city,
+                conference = it.conference,
+                division = it.division,
+                fullName = it.fullName,
+                name = it.name
             )
         )
     }

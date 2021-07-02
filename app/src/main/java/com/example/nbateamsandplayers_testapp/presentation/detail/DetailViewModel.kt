@@ -22,7 +22,7 @@ class DetailViewModel @Inject constructor(
         return player
     }
 
-    fun loadPlayer(id: Int) {
+    private fun loadPlayer(id: Int) {
         viewModelScope.launch {
             val response = repository.getPlayer(id)
             player.postValue(response)

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.app_domain.model.Player
 import com.example.nbateamsandplayers_testapp.databinding.PlayerCardItemBinding
 
-class PlayerAdapter() : RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
+class PlayerAdapter : RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
 
     var dataSet: List<Player> = listOf()
         set(value) {
@@ -15,7 +15,7 @@ class PlayerAdapter() : RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
         }
     var onPlayerClickListener: ((player: Player) -> Unit)? = null
 
-    inner class ViewHolder(val binding: PlayerCardItemBinding) :
+    inner class ViewHolder(private val binding: PlayerCardItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(player: Player) {

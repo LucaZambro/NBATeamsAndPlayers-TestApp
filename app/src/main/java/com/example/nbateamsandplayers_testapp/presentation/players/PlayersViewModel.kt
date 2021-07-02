@@ -17,7 +17,7 @@ class PlayersViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val players: MutableLiveData<List<Player>> = MutableLiveData()
-    val filteredPlayers: MutableLiveData<List<Player>> = MutableLiveData()
+    private val filteredPlayersContainer: MutableList<Player> = mutableListOf()
     var nextPage: Int = 1 // Inizio da questa pagina alla creazione del fragment
     var nextFilteredPage: Int = 1
 
@@ -26,62 +26,64 @@ class PlayersViewModel @Inject constructor(
     }
 
     fun getPlayers(): LiveData<List<Player>> {
-        //loadPlayers()
         return players
     }
 
-    fun flushPlayers() {
-        players.postValue(mutableListOf<Player>())
+    fun loadPlayers() {
+        viewModelScope.launch {
+            val response = repository.getPlayers(1)
+            nextPage = response.keys.first()
+            Log.d("***************LOAD", response.toString())
+
+            val playersFromApiRequest = response[nextPage].orEmpty()
+            players.postValue(playersFromApiRequest)
+        }
+
     }
 
-    fun loadPlayers() {
+    fun loadMorePlayers() {
         viewModelScope.launch {
             val response = repository.getPlayers(nextPage)
             nextPage = response.keys.first()
             Log.d("***************LOAD", response.toString())
 
-            val playersFromApi = response.get(nextPage).orEmpty()
-            val newPlayerList = mutableListOf<Player>()
+            val playersFromApi = response[nextPage].orEmpty()
 
-            if(playersFromApi != emptyList<Player>()) {
-                newPlayerList.addAll(players.value.orEmpty())
-                newPlayerList.addAll(playersFromApi)
-            }
+            val newPlayerList = mutableListOf<Player>()
+            newPlayerList.addAll(players.value.orEmpty())
+            newPlayerList.addAll(playersFromApi)
+
             players.postValue(newPlayerList)
         }
 
     }
 
-    // Viene invocato alla prima ricerca
-    fun search(text: String, page: Int) {
+    // Viene invocato dopo aver modificato la barra di ricerca
+    fun search(text: String) {
         viewModelScope.launch {
             val response = repository.getFilteredPlayers(text, 1)
             nextFilteredPage = response.keys.first()
             Log.d("*************SEARCH", response.toString())
 
-            val playersFromApiRequest = response.get(nextFilteredPage).orEmpty()
+            val playersFromApiRequest = response[nextFilteredPage].orEmpty()
 
-            filteredPlayers.postValue(playersFromApiRequest)
+            filteredPlayersContainer.clear()
+            filteredPlayersContainer.addAll(playersFromApiRequest)
             players.postValue(playersFromApiRequest)
         }
     }
 
-    // Viene invocato allo scorrere della lista se ci sono altri giocatori da mostrare
-    fun searchMorePlayers(text: String, page: Int) {
+    // Viene invocato allo scorrere della lista, se ci sono altri giocatori da mostrare
+    fun searchMorePlayers(text: String) {
         viewModelScope.launch {
-            val response = repository.getFilteredPlayers(text, page)
+            val response = repository.getFilteredPlayers(text, nextFilteredPage)
             nextFilteredPage = response.keys.first()
             Log.d("*********SEARCHMORE", response.toString())
 
-            val playersFromApiRequest = response.get(nextFilteredPage).orEmpty()
-            val newFilteredPlayerList = mutableListOf<Player>()
+            val playersFromApiRequest = response[nextFilteredPage].orEmpty()
 
-            if (playersFromApiRequest != emptyList<Player>()) {
-                newFilteredPlayerList.addAll(filteredPlayers.value.orEmpty())
-                newFilteredPlayerList.addAll(playersFromApiRequest)
-            }
-            filteredPlayers.postValue(newFilteredPlayerList)
-            players.postValue(newFilteredPlayerList)
+            filteredPlayersContainer.addAll(playersFromApiRequest)
+            players.postValue(filteredPlayersContainer)
         }
     }
 

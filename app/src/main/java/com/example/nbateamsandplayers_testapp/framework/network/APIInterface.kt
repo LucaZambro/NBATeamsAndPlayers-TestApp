@@ -7,7 +7,6 @@ import retrofit2.http.Query
 
 interface APIInterface {
 
-    //DA SISTEMARE
     @GET("teams")
     suspend fun getTeams(): Response<TeamDataModel>
 
