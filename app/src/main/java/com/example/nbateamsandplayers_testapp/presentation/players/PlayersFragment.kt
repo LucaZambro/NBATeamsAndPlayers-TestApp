@@ -85,7 +85,7 @@ class PlayersFragment : Fragment() {
                         if (filter != "" && viewModel.nextFilteredPage != 0) {
                             binding.progressBar.visibility = View.VISIBLE
                             binding.viewBackground.visibility = View.VISIBLE
-                            viewModel.search(filter, viewModel.nextFilteredPage)
+                            viewModel.searchMorePlayers(filter, viewModel.nextFilteredPage)
                         }
                     }
                 }

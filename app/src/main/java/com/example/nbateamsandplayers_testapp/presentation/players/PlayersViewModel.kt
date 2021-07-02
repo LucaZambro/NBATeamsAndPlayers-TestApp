@@ -38,7 +38,7 @@ class PlayersViewModel @Inject constructor(
         viewModelScope.launch {
             val response = repository.getPlayers(nextPage)
             nextPage = response.keys.first()
-            Log.d("******************LOAD", response.toString())
+            Log.d("***************LOAD", response.toString())
 
             val playersFromApi = response.get(nextPage).orEmpty()
             val newPlayerList = mutableListOf<Player>()
@@ -52,11 +52,26 @@ class PlayersViewModel @Inject constructor(
 
     }
 
+    // Viene invocato alla prima ricerca
     fun search(text: String, page: Int) {
+        viewModelScope.launch {
+            val response = repository.getFilteredPlayers(text, 1)
+            nextFilteredPage = response.keys.first()
+            Log.d("*************SEARCH", response.toString())
+
+            val playersFromApiRequest = response.get(nextFilteredPage).orEmpty()
+
+            filteredPlayers.postValue(playersFromApiRequest)
+            players.postValue(playersFromApiRequest)
+        }
+    }
+
+    // Viene invocato allo scorrere della lista se ci sono altri giocatori da mostrare
+    fun searchMorePlayers(text: String, page: Int) {
         viewModelScope.launch {
             val response = repository.getFilteredPlayers(text, page)
             nextFilteredPage = response.keys.first()
-            Log.d("*************SEARCH", response.toString())
+            Log.d("*********SEARCHMORE", response.toString())
 
             val playersFromApiRequest = response.get(nextFilteredPage).orEmpty()
             val newFilteredPlayerList = mutableListOf<Player>()
